@@ -9,7 +9,9 @@ function initTools(){
 			var arr, 
 				part,
 				url = {};
-
+			if(!(str||"").replace(/^\s+|\s+$/,"")){
+				return {};
+			}
 			arr = str.substring(1, str.length).split('&');
 			for (var i in arr) {
 				part = arr[i].split('=');
@@ -59,15 +61,15 @@ $("#login").click(function(){
 							}
 							return url;
 						};
-					var obj = parseUrl(search.substr(1));
+					var obj = parseUrl(search);
 					obj.UserId = data.UserId;
 					obj.AccessToken = data.AccessToken;
 					var queryStr="?";
 					for(var i in obj){
 						queryStr += (i+"="+obj[i]+"&");
 					}
-					window.location.search = queryStr.substring(1,queryStr.length-2);
-				}).toString(),"JSON.parse('"+JSON.stringify(data.Data)+"')")
+					window.location.search = queryStr.substring(1,queryStr.length-1);
+				}).toString(),JSON.stringify(data.Data))
 				//window.close();
 			}else{
 				alert(data.Msg)
