@@ -1,12 +1,18 @@
 {
 	"name": "ymtapp-chome-plug",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"manifest_version": 2,
 	"description": "码头appchrome插件",
 	"icons": {
 		"16": "icon.png",
 		"48": "icon.png",
 		"128": "icon.png"
+	},
+	"background": {
+		"scripts": [
+			"js/jquery-1.9.1.min.js",
+			"js/background.js"
+		]
 	},
 	"browser_action": {
 		"default_icon": "icon.png",
@@ -17,7 +23,8 @@
 	"content_scripts": [{
 		"matches": ["http://*/*"],
 		"js": [
-			"js/jquery-1.9.1.min.js"
-		]		
+			"js/jquery-1.9.1.min.js",
+			"js/content_scripts.js"
+		]
 	}]
 }

@@ -27,8 +27,7 @@ function initTools(){
  */
 function tabsExecute(code,param){
 	param = param || "";
-	console.log("("+code+")("+param+")")
-	chrome.tabs.executeScript(null,{code:"("+code+")("+param+")"});
+	chrome.tabs.executeScript(null,{code:"("+String(code)+")("+param+")"});
 }
 
 //去tab中注册方法
@@ -45,7 +44,7 @@ $("#login").click(function(){
 		contentType:"application/x-www-form-urlencoded; charset=UTF-8",
 		success:function(data){
 			if(data.Code == 200){
-				tabsExecute((function(data){
+				tabsExecute(function(data){
 					var search = window.location.search,
 						parseUrl = function(str) {
 							var arr, 
@@ -69,7 +68,7 @@ $("#login").click(function(){
 						queryStr += (i+"="+obj[i]+"&");
 					}
 					window.location.search = queryStr.substring(1,queryStr.length-1);
-				}).toString(),JSON.stringify(data.Data))
+				},JSON.stringify(data.Data))
 				//window.close();
 			}else{
 				alert(data.Msg)
@@ -78,6 +77,37 @@ $("#login").click(function(){
 
 	})
 });
+
+$("#logout").click(function(){	
+	tabsExecute(function(){
+		//window.location.href = 'http://'+window.location.host+'/forYmatouApp/updateLogin?UserId=nil&AccessToken=nil';
+
+		document.createElement('img').src='http://'+window.location.host+'/forYmatouApp/updateLogin?UserId=nil&AccessToken=nil';
+		var search = window.location.search,
+			parseUrl = function(str) {
+				var arr, 
+					part,
+					url = {};
+				if(!(str||"").replace(/^\s+|\s+$/,"")){
+					return {};
+				}
+				arr = str.substring(1, str.length).split('&');
+				for (var i in arr) {
+					part = arr[i].split('=');
+					url[part[0]] = part[1];
+				}
+				return url;
+			};
+		var obj = parseUrl(search);
+		delete obj.UserId;
+		delete obj.AccessToken;
+		var queryStr="?";
+		for(var i in obj){
+			queryStr += (i+"="+obj[i]+"&");
+		}
+		window.location.search = queryStr.substring(1,queryStr.length-1);
+	})
+})
 
 $(".jump").click(function(){
 	var me = $(this),
@@ -88,5 +118,5 @@ $(".jump").click(function(){
 	}),"\""+path+"\"");	
 })
 
-//chrome.tabs.executeScript(null,{code:"("+initTab.toString()+")()"});
-
+var data = chrome.extension.getBackgroundPage();
+data.sendMessage()
