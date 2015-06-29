@@ -1,6 +1,6 @@
 {
 	"name": "ymtapp-chome-plug",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"manifest_version": 2,
 	"description": "码头appchrome插件",
 	"icons": {
